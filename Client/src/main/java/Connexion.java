@@ -22,7 +22,11 @@ public class Connexion {
             //Recuperer la liste
             String jsonString = socketIn.readLine();
 
+            //fermeture de la connexion
+            socket.close();
 
+            //return
+            return jsonString;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
