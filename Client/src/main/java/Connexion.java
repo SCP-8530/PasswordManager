@@ -17,7 +17,7 @@ public class Connexion {
             BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             //Execution de la commande
-            socketOut.printf("LISTE");
+            socketOut.println("LISTE");
 
             //Recuperer la liste
             String jsonString = socketIn.readLine();

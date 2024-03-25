@@ -3,48 +3,25 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        ServerSocket serverSocket;
-        Socket clientSocket;
+        ServerSocket serverSocket = null;
+        Socket clientSocket = null;
+        serverSocket = new ServerSocket(8080);
 
-        try {
-            //Ecoute des ports
-            serverSocket = new ServerSocket(8080);
-            clientSocket =  serverSocket.accept();
-            System.out.printf("DEBUG: Connexion du client: %s\n", clientSocket.getInetAddress().getHostAddress());
+        while (true){
+            clientSocket = serverSocket.accept();
 
-            //Avoir les flux d'entrer et de sortie
-            PrintWriter socketOut = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader socketIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            Command command = new Command(serverSocket, clientSocket);
+            Thread thread = new Thread(command);
 
-            //Recuperer les commandes du client
-            while (true) {
-                //log
-                String command = socketIn.readLine();
-                System.out.printf("DEBUG: Commande %s\n", command);
-
-                switch (command) {
-                    case "LISTE":
-                        //Envoie de la liste
-                        Gson gson = new Gson();
-                        BufferedReader br = new BufferedReader(new FileReader("list_password.json"));
-                        String jsonString = gson.fromJson(br, String.class);
-                        socketOut.printf(jsonString);
-
-                        //log
-                        System.out.println("INFO: Liste envoyer avec succes");
-                        break;
-                    default:
-                        //log
-                        System.out.println("INFO: La commande ne fonctionne pas");
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            thread.start();
         }
     }
 }

@@ -94,14 +94,15 @@ public class Main {
         if (Objects.equals(jsonString, "{\"vide\":\"vide\"}")) {
             System.out.println("Vous n'avez aucun mot de passe sauvegarder");
         } else {
-            Map<String,String> map_encripter = new Gson().fromJson( jsonString, new TypeToken<HashMap<String,String>>() {}.getType() );
-            Map<String,String> map_decripter = Decryptage(map_encripter);
+            //Map<String,String> map_encripter = new Gson().fromJson( jsonString, new TypeToken<HashMap<String,String>>() {}.getType() );
+            //Map<String,String> map_decripter = Decryptage(map_encripter);
 
-            int i = 0;
-            for (Map.Entry<String, String> entry : map_decripter.entrySet()) {
-                i++;
-                System.out.printf("%s. %s: %s",i, entry.getKey(), entry.getValue());
-            }
+            //int i = 0;
+            //for (Map.Entry<String, String> entry : map_decripter.entrySet()) {
+            //    i++;
+            //    System.out.printf("%s. %s: %s",i, entry.getKey(), entry.getValue());
+            //}
+            System.out.println(jsonString);
 
         }
 
