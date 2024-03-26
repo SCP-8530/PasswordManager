@@ -26,7 +26,7 @@ public class Connexion {
             String[] data = str_map.split(",");
             Map<String, String> map = new HashMap<>();
             for (String keyValue: data) {
-                String[] parts = keyValue.split("=");
+                String[] parts = keyValue.split("=",2);
                 map.put(parts[0],parts[1]);
             }
 
@@ -41,4 +41,26 @@ public class Connexion {
         }
     }
 
+    public static void Send(Map<String,String> map) {
+        try {
+            //Connexion
+            Socket socket = new Socket("localhost", 8080);
+
+            //Recuperer les flux
+            PrintWriter socketOut = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            //Execution de la commande
+            socketOut.println("SEND");
+
+            //Recuperer la liste et la transformer
+            socketOut.println(map);
+
+
+            //fermeture de la connexion
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
