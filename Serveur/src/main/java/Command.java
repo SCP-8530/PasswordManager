@@ -1,15 +1,17 @@
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public class Command implements Runnable {
 
-    private ServerSocket serverSocket;
     private Socket clientSocket;
 
-    public Command(ServerSocket serverSocket, Socket clientSocket) {
-        this.serverSocket = serverSocket;
+    public Command(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
@@ -29,9 +31,10 @@ public class Command implements Runnable {
 
                 if (Objects.equals(command, "LISTE")) {
                     //Envoie de la liste
+                    Gson gson = new Gson();
                     BufferedReader br = new BufferedReader(new FileReader("list_password.json"));
-                    String jsonString = br.toString();
-                    socketOut.println(jsonString);
+                    Map map = gson.fromJson(br, Map.class);
+                    socketOut.println(map);
 
                     //log
                     System.out.println("INFO: Liste envoyer avec succes");

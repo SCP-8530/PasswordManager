@@ -67,21 +67,22 @@ public class Main {
                 System.out.printf("\nCommande : ");
                 String input = scanner.nextLine();
 
-                //Utilisation de la commande
-                switch (input) {
-                    case "1":
-                        //Afficher la liste de mot de passe
-                        CleanCMD();
-                        AfficherPassword();
+                boolean commande_valide = true;
 
-                        //Attente avant le retour au menu
-                        Wait();
-                        break;
-
-                    default:
-                        System.out.println("Commande non valide :(");
+                //Afficher la liste de mot de passe
+                if (input.equals("1")) {
+                    CleanCMD();
+                    AfficherPassword();
+                    break;
+                } else {
+                    System.out.println("Commande non valide :(");
                 }
+
             }
+
+            //fin de la commande
+            Wait();
+            CleanCMD();
         }
     }
 
@@ -89,21 +90,18 @@ public class Main {
      * Afficher les mots de passes
      * */
     private static void AfficherPassword() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        String jsonString = Connexion.Liste();
+        Map<String,String> map_encripter = Connexion.Liste();
 
-        if (Objects.equals(jsonString, "{\"vide\":\"vide\"}")) {
+        if (map_encripter.containsKey("vide")) { //aucun mot de passe dans la base de donne
             System.out.println("Vous n'avez aucun mot de passe sauvegarder");
-        } else {
-            //Map<String,String> map_encripter = new Gson().fromJson( jsonString, new TypeToken<HashMap<String,String>>() {}.getType() );
-            //Map<String,String> map_decripter = Decryptage(map_encripter);
+        } else { //mot de passe present et decryptage du mot de passe
+            Map<String,String> map_decripter = Decryptage(map_encripter);
 
-            //int i = 0;
-            //for (Map.Entry<String, String> entry : map_decripter.entrySet()) {
-            //    i++;
-            //    System.out.printf("%s. %s: %s",i, entry.getKey(), entry.getValue());
-            //}
-            System.out.println(jsonString);
-
+            int i = 0;
+            for (Map.Entry<String, String> entry : map_decripter.entrySet()) {
+                i++;
+                System.out.printf("%s. %s: %s",i, entry.getKey(), entry.getValue());
+            }
         }
 
 

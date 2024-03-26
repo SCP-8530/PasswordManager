@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.*;
 
 public class Connexion {
-    public static String Liste() {
+    public static Map<String, String> Liste() {
         try {
             //Connexion
             Socket socket = new Socket("localhost", 8080);
@@ -19,14 +20,22 @@ public class Connexion {
             //Execution de la commande
             socketOut.println("LISTE");
 
-            //Recuperer la liste
-            String jsonString = socketIn.readLine();
+            //Recuperer la liste et la transformer
+            String str_map = socketIn.readLine();
+            str_map = str_map.substring(1,str_map.length()-1);
+            String[] data = str_map.split(",");
+            Map<String, String> map = new HashMap<>();
+            for (String keyValue: data) {
+                String[] parts = keyValue.split("=");
+                map.put(parts[0],parts[1]);
+            }
+
 
             //fermeture de la connexion
             socket.close();
 
             //return
-            return jsonString;
+            return map;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

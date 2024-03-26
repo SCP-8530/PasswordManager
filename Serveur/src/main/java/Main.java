@@ -18,7 +18,7 @@ public class Main {
         while (true){
             clientSocket = serverSocket.accept();
 
-            Command command = new Command(serverSocket, clientSocket);
+            Command command = new Command(clientSocket);
             Thread thread = new Thread(command);
 
             thread.start();
